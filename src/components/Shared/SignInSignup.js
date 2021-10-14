@@ -28,7 +28,7 @@ export default function SignInSignup({
 
   const handleSignUp = async (data) => {
     try {
-      const response = await fetch('http://localhost:8000/auth/register', {
+      const response = await fetch('https://mysterious-sands-20308.herokuapp.com/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export default function SignInSignup({
 
   const handleSignIn = async (data) => {
     try {
-      const response = await fetch('http://localhost:8000/auth/login', {
+      const response = await fetch('https://mysterious-sands-20308.herokuapp.com/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -38,7 +38,7 @@ export default function FeatureRequestDetails({
       ...comments,
     ];
     try {
-      const response = await fetch('http://localhost:8000/feature/comment', {
+      const response = await fetch('https://mysterious-sands-20308.herokuapp.com/feature/comment', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ comments: newComments, _id }),
@@ -66,7 +66,7 @@ export default function FeatureRequestDetails({
         ? votes.filter((item) => item !== user._id)
         : [...votes, user._id];
       try {
-        const response = await fetch('http://localhost:8000/feature/vote', {
+        const response = await fetch('https://mysterious-sands-20308.herokuapp.com/feature/vote', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ votes: newVotes, _id }),

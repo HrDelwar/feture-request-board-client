@@ -32,7 +32,7 @@ export default function FeatureRequestForm({
     setFormData({ data: newData, e });
     if (loggedIn) {
       try {
-        const response = await fetch('http://localhost:8000/feature/add', {
+        const response = await fetch('https://mysterious-sands-20308.herokuapp.com/feature/add', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

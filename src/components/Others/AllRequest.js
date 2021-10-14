@@ -20,7 +20,7 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
 
   console.log({ featureRequests });
   const loadAllFeature = () => {
-    fetch('http://localhost:8000/feature/all')
+    fetch('https://mysterious-sands-20308.herokuapp.com/feature/all')
       .then((res) => res.json())
       .then((result) => {
         setFeatureRequests(sortBy(result.features, 'createdAt').reverse());
@@ -96,7 +96,7 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
     if (searchValue) {
       try {
         const response = await fetch(
-          `http://localhost:8000/feature/search/${searchValue}`
+          `https://mysterious-sands-20308.herokuapp.com/feature/search/${searchValue}`
         );
         const result = await response.json();
         console.log({ result });
