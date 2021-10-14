@@ -18,7 +18,6 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
     loadAllFeature();
   }, []);
 
-  console.log({ featureRequests });
   const loadAllFeature = () => {
     fetch('https://mysterious-sands-20308.herokuapp.com/feature/all')
       .then((res) => res.json())

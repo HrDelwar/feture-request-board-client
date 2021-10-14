@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { UserContext } from '../../App';
 
 export default function Navbar() {
@@ -48,25 +48,41 @@ export default function Navbar() {
           }
         >
           <li className="w-full">
-            <Link to="/home" className={navLink}>
+            <NavLink
+              activeClassName="bg-gray-700"
+              to="/home"
+              className={navLink}
+            >
               Home
-            </Link>
+            </NavLink>
           </li>
           <li className="w-full">
-            <Link to="/about" className={navLink}>
+            <NavLink
+              activeClassName="bg-gray-700"
+              to="/about"
+              className={navLink}
+            >
               About
-            </Link>
+            </NavLink>
           </li>
           <li className="w-full">
-            <Link to="/contact" className={navLink}>
+            <NavLink
+              to="/contact"
+              activeClassName="bg-gray-700"
+              className={navLink}
+            >
               Contact
-            </Link>
+            </NavLink>
           </li>
           {loggedIn && (
             <li className="w-full">
-              <Link to="/dashboard" className={navLink}>
+              <NavLink
+                to="/dashboard"
+                activeClassName="bg-gray-700"
+                className={navLink}
+              >
                 dashboard
-              </Link>
+              </NavLink>
             </li>
           )}
 

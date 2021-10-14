@@ -15,6 +15,7 @@ function App() {
   const [featureRequests, setFeatureRequests] = useState([]);
   const [fixedFeatureRequests, setFixedFeatureRequests] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState({ display_url: '' });
 
   useEffect(() => {
     const initUser = JSON.parse(sessionStorage.getItem('user')) || {};
@@ -27,7 +28,9 @@ function App() {
       value={{
         loggedIn,
         openModal,
+        uploadedImage,
         featureRequests,
+        setUploadedImage,
         setFeatureRequests,
         setOpenModal,
         setLoggedIn,
