@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import {
   Route,
@@ -7,42 +7,47 @@ import {
   useRouteMatch,
   NavLink,
 } from 'react-router-dom';
-import { useState } from 'react/cjs/react.development';
 import Swal from 'sweetalert2';
 import { result, sortBy } from 'underscore';
 import AllFeatureRequest from './AllFeatureRequest';
 
 export default function AdminDashboard() {
-  const [form, setForm] = useState([]);
   const [reqFormId, setReqFormId] = useState('');
+  const [form, setForm] = useState([]);
 
   const { url, path } = useRouteMatch();
 
   useEffect(() => {
-    fetch('https://mysterious-sands-20308.herokuapp.com/form/')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setForm(sortBy(data.form.requestForm, 'sort'));
-          setReqFormId(data.form._id);
-        } else {
-          Swal.fire({
-            title: 'Error!',
-            text: result.message,
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        }
-      })
-      .catch((err) => {
+    loadForm();
+  }, []);
+
+  const loadForm = async () => {
+    try {
+      const response = await fetch(
+        'https://mysterious-sands-20308.herokuapp.com/form/'
+      );
+      const data = await response.json();
+      if (data.success) {
+        setForm(sortBy(data.form.requestForm, 'sort'));
+        setReqFormId(data.form._id);
+        console.log({ form: data.form.requestForm });
+      } else {
         Swal.fire({
           title: 'Error!',
-          text: err.message,
+          text: result.message,
           icon: 'error',
           confirmButtonText: 'OK',
         });
+      }
+    } catch (err) {
+      Swal.fire({
+        title: 'Error!',
+        text: err.message,
+        icon: 'error',
+        confirmButtonText: 'OK',
       });
-  }, []);
+    }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -136,15 +141,10 @@ export default function AdminDashboard() {
           <Redirect to={path + '/features'} />
         </Route>
         <Route path={path + '/features'}>
-          <>
-            <p className="my-2 text-center text-xl">
-              Move card to change the status!
-            </p>
-            <AllFeatureRequest />
-          </>
+          <AllFeatureRequest />
         </Route>
         <Route path={path + '/form-builder'}>
-          <>
+          <div>
             <p className="my-2 text-center text-xl">
               Darg and drop for sorting field!'
             </p>
@@ -366,7 +366,7 @@ export default function AdminDashboard() {
                 )}
               </Droppable>
             </DragDropContext>
-          </>
+          </div>
         </Route>
       </Switch>
     </main>

@@ -77,7 +77,7 @@ export default function FeatureRequestForm({
     if (submitFeature) {
       onSubmit(formData.data, formData.e);
     }
-  }, [submitFeature]);
+  }, [submitFeature, formData.data, formData.e]);
 
   useEffect(() => {
     fetch('https://mysterious-sands-20308.herokuapp.com/form/')
