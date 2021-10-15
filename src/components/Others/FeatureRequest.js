@@ -31,26 +31,11 @@ export default function FeatureRequest() {
       </section>
       {openModal && (
         <div
-          className="absolute left-0 top-0 bottom-0 h-full right-0 z-50 flex justify-center flex-col items-center"
+          className="absolute left-0 top-0 bottom-0  right-0 z-50 flex justify-center flex-col items-center"
           style={{ background: '#0000004a' }}
         >
-          <button
-            className=" p-2 absolute top-4 left-1/2 transform -translate-x-1/2 "
-            onClick={() => setOpenModal(false)}
-          >
-            <div
-              className={
-                'h-1  bg-white rounded-lg transition  translate-y-1 w-7 transform rotate-45'
-              }
-            ></div>
-            <div
-              className={
-                'h-1  bg-white rounded-lg transition w-7 transform -rotate-45'
-              }
-            ></div>
-          </button>
           <SignInSignup
-            className="opacity-100 "
+            className="absolute top-24 "
             setOpenModal={setOpenModal}
             setLoggedIn={setLoggedIn}
             setSubmitFeature={setSubmitFeature}

@@ -5,7 +5,9 @@ import NotFound from './components/Pages/NotFound';
 import Footer from './components/Shared/Footer';
 import Header from './components/Shared/Header';
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { createContext, useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 export const UserContext = createContext();
 
@@ -20,6 +22,7 @@ function App() {
   useEffect(() => {
     const initUser = JSON.parse(sessionStorage.getItem('user')) || {};
     setUser(initUser);
+
     setLoggedIn(sessionStorage.getItem('token') ? true : false);
   }, []);
 
@@ -42,6 +45,7 @@ function App() {
     >
       <Router>
         <Header />
+        <ToastContainer />
         <Switch>
           <Route exact path="/">
             <Home />

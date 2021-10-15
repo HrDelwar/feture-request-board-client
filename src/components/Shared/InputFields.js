@@ -89,8 +89,10 @@ export const TextArea = ({ formSchema, register, errors }) => {
 };
 
 export const SelectInput = ({ formSchema, register, errors }) => {
-  console.log({ formSchema });
-  return (
+
+  return formSchema.name === 'status' ? (
+    <></>
+  ) : (
     <div className="flex mt-3 flex-col p-2 pb-3 rounded-md bg-gray-100">
       <label
         htmlFor={formSchema.name}
@@ -102,8 +104,8 @@ export const SelectInput = ({ formSchema, register, errors }) => {
         {...register(formSchema.name)}
         className="text-gray-500 bg-transparent  capitalize  focus:outline-none  placeholder-gray-400"
       >
-        {formSchema.options.map((option) => (
-          <option selected={option.selected} value={option.value}>
+        {formSchema.options.map((option, i) => (
+          <option key={i} value={option.value}>
             {option.title}
           </option>
         ))}

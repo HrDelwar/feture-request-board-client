@@ -28,13 +28,16 @@ export default function SignInSignup({
 
   const handleSignUp = async (data) => {
     try {
-      const response = await fetch('https://mysterious-sands-20308.herokuapp.com/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        'https://mysterious-sands-20308.herokuapp.com/auth/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+      );
       const result = await response.json();
       if (result.success) {
         setErrMsg('');
@@ -50,13 +53,16 @@ export default function SignInSignup({
 
   const handleSignIn = async (data) => {
     try {
-      const response = await fetch('https://mysterious-sands-20308.herokuapp.com/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: data.email, password: data.password }),
-      });
+      const response = await fetch(
+        'https://mysterious-sands-20308.herokuapp.com/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: data.email, password: data.password }),
+        }
+      );
       const result = await response.json();
       if (result.success) {
         setErrMsg('');
@@ -78,9 +84,26 @@ export default function SignInSignup({
 
   return (
     <div className={'bg-gray-200 max-w-sm p-3 rounded-lg ' + className}>
-      <h2 className="text-xl text-center uppercase">
-        {newUser ? 'signup' : 'sign in'}
-      </h2>
+      <div className="flex justify-between">
+        <h2 className="text-xl text-center uppercase">
+          {newUser ? 'signup' : 'sign in'}
+        </h2>
+        <button
+          className="  "
+          onClick={() => setOpenModal(false)}
+        >
+          <div
+            className={
+              'h-1  bg-red-500 rounded-lg transition  translate-y-1 w-6 transform rotate-45'
+            }
+          ></div>
+          <div
+            className={
+              'h-1  bg-red-500 rounded-lg transition w-6 transform -rotate-45'
+            }
+          ></div>
+        </button>
+      </div>
       <p className="text-center my-4">
         {newUser ? 'Create ' : 'Login '} your own account
       </p>

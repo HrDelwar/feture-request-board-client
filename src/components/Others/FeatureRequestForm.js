@@ -1,7 +1,5 @@
-import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { IMAGE_BB_KEY } from '../../env';
 import { UserContext } from '../../App';
 import {
   FileInput,
@@ -35,24 +33,27 @@ export default function FeatureRequestForm({
     formState: { errors },
   } = useForm();
 
-  const errorElement = (item) => (
-    <p className="text-red-400 text-sm">{item} is required</p>
-  );
-
   const onSubmit = async (data, e) => {
-    const newData = { ...data, logo: uploadedImage.display_url };
+    const newData = {
+      ...data,
+      logo: uploadedImage.display_url,
+      status: 'under-review',
+    };
     console.log({ newData });
     setFormData({ data: newData, e });
     if (loggedIn) {
       try {
-        const response = await fetch('http://localhost:8000/feature/add', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            token: sessionStorage.getItem('token'),
-          },
-          body: JSON.stringify(newData),
-        });
+        const response = await fetch(
+          'https://mysterious-sands-20308.herokuapp.com/feature/add',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              token: sessionStorage.getItem('token'),
+            },
+            body: JSON.stringify(newData),
+          }
+        );
         const result = await response.json();
         if (result.success) {
           setErrMsg('');
@@ -79,7 +80,7 @@ export default function FeatureRequestForm({
   }, [submitFeature]);
 
   useEffect(() => {
-    fetch('http://localhost:8000/form/')
+    fetch('https://mysterious-sands-20308.herokuapp.com/form/')
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -101,10 +102,11 @@ export default function FeatureRequestForm({
       </p>
 
       <form action="" className="" onSubmit={handleSubmit(onSubmit)}>
-        {form.map((formSchema) => {
+        {form.map((formSchema, i) => {
           if (formSchema.type === 'text') {
             return (
               <TextInput
+                key={i}
                 formSchema={formSchema}
                 register={register}
                 errors={errors}
@@ -114,6 +116,7 @@ export default function FeatureRequestForm({
           if (formSchema.type === 'select') {
             return (
               <SelectInput
+                key={i}
                 formSchema={formSchema}
                 register={register}
                 errors={errors}
@@ -124,6 +127,7 @@ export default function FeatureRequestForm({
           if (formSchema.type === 'textarea') {
             return (
               <TextArea
+                key={i}
                 formSchema={formSchema}
                 register={register}
                 errors={errors}
@@ -134,6 +138,7 @@ export default function FeatureRequestForm({
           if (formSchema.type === 'file') {
             return (
               <FileInput
+                key={i}
                 formSchema={formSchema}
                 register={register}
                 errors={errors}

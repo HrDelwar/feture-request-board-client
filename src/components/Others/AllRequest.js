@@ -13,6 +13,33 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
   const [sorting, setSorting] = useState('az');
   const [searchValue, setSearchValue] = useState('');
   const [afterSearch, setAfterSearch] = useState(false);
+  const [allName, setAllName] = useState([]);
+
+  const [allStatus, setAllStatus] = useState([]);
+  useEffect(() => {
+    fetch('https://mysterious-sands-20308.herokuapp.com/form/')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          const newAllName = data?.form?.requestForm.map((item) => {
+            if (item.name === 'status') {
+              setAllStatus(item.options);
+            }
+            return item.name === 'status' ||
+              item.name === 'title' ||
+              item.name === 'logo'
+              ? null
+              : item.name;
+          });
+          setAllName(newAllName);
+        } else {
+          console.log({ allReqERr: data.message });
+        }
+      })
+      .catch((err) => {
+        console.log({ allReqERr: err });
+      });
+  }, []);
 
   useEffect(() => {
     loadAllFeature();
@@ -142,12 +169,14 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
               className="bg-gray-300  text-gray-600 capitalize text-sm rounded mx-2 "
               id="sort"
               onChange={handleFilleter}
+              defaultValue="all"
             >
               <option value="all">all</option>
-              <option value="under-review">under review</option>
-              <option value="planned">planned</option>
-              <option value="in-progress">in progress</option>
-              <option value="complete">complete</option>
+              {allStatus.map((s, i) => (
+                <option key={i} value={s.value}>
+                  {s.title}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -175,6 +204,7 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
             key={request._id}
             request={request}
             loggedIn={loggedIn}
+            allName={allName}
           />
         ))}
       </div>
