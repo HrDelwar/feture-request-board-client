@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import { filter, sortBy } from 'underscore';
 import { UserContext } from '../../App';
 import FeatureRequestDetails from './FeatureRequestDetails';
@@ -13,6 +15,7 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
   const [sorting, setSorting] = useState('az');
   const [searchValue, setSearchValue] = useState('');
   const [afterSearch, setAfterSearch] = useState(false);
+  const [searchFocus, setSearchFocus] = useState(false);
   const [allName, setAllName] = useState([]);
 
   const [allStatus, setAllStatus] = useState([]);
@@ -123,21 +126,32 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
           `https://mysterious-sands-20308.herokuapp.com/feature/search/${searchValue}`
         );
         const result = await response.json();
-        console.log({ result });
         if (result.success) {
           setFeatureRequests(sortBy(result.features, 'createdAt').reverse());
           setFixedFeatureRequests(
             sortBy(result.features, 'createdAt').reverse()
           );
+          toast.success(result.message);
+          setSearchFocus(false);
         } else {
-          alert(result.message);
+          toast.info(result.message);
         }
         e.target.reset();
       } catch (err) {
-        alert(err.message);
+        Swal.fire({
+          title: 'Error',
+          text: err.message,
+          icon: 'error',
+          confirmButtonText: 'Ok',
+        });
       }
     } else {
-      alert('Enter a value and search again');
+      Swal.fire({
+        title: 'Important',
+        text: 'Enter a value and search again',
+        icon: 'info',
+        confirmButtonText: 'Ok',
+      });
     }
   };
 
@@ -169,7 +183,9 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
               onChange={handleFilleter}
               defaultValue="all"
             >
-              <option value="all">all</option>
+              <option value="all" onClick={handleFilleter}>
+                all
+              </option>
               {allStatus.map((s, i) => (
                 <option key={i} value={s.value}>
                   {s.title}
@@ -185,10 +201,26 @@ export default function AllRequest({ openModal, loggedIn, setOpenModal }) {
               type="text"
               name="search"
               id="search"
-              className="bg-gray-300 transition-all rounded px-2 py-1 w-40 focus:absolute right-0 focus:w-full top-0  outline-none focus:outline-none text-gray-500 "
+              onFocus={() => setSearchFocus(true)}
+              onBlur={() => setSearchFocus(false)}
+              className={
+                'bg-gray-300 transition-all rounded px-2 py-1 w-40 focus:absolute right-0  top-0  outline-none focus:outline-none text-gray-500 ' +
+                (searchFocus ? ' focus:w-full' : '  ')
+              }
               placeholder="Press Enter fro search"
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                setSearchFocus(true);
+              }}
             />
+            {searchFocus && (
+              <button
+                className="absolute top-0 right-1 z-50 text-lg font-bold rounded-full text-red-500"
+                type="button"
+              >
+                ⊗
+              </button>
+            )}
             <input type="submit" hidden />
           </form>
         </div>

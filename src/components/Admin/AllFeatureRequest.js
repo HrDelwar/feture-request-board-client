@@ -112,9 +112,9 @@ export default function AllFeatureRequest() {
         Move card to change the status!
       </p>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div className="flex w-full bg-gray-200 mt-2">
+        <div className="flex flex-wrap justify-center sm:justify-between items-center w-full  mt-2">
           {allStatus.map((status, i) => (
-            <div className="mt-4 px-4 rounded  mr-4" key={i}>
+            <div style={{minWidth:240, minHeight:120}} className="mt-4 px-4  h-full rounded bg-gray-200  mr-4" key={i}>
               <div className=" px-2 text-lg text-gray-700 uppercase text-center">
                 {status}
               </div>
