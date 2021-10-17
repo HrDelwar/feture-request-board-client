@@ -1,7 +1,9 @@
 import axios from 'axios';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserContext } from '../../App';
 import { IMAGE_BB_KEY } from '../../env';
+import ReactLoading from 'react-loading';
+import Swal from 'sweetalert2';
 
 const errorElement = (item) => (
   <p className="text-red-400 text-sm">{item} is required</p>
@@ -37,7 +39,10 @@ export const TextInput = ({ formSchema, register, errors }) => {
 
 export const FileInput = ({ formSchema, register, errors }) => {
   const { uploadedImage, setUploadedImage } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+
   const uploadImage = (event) => {
+    setLoading(true);
     const imageData = new FormData();
     imageData.set('key', IMAGE_BB_KEY);
     imageData.append('image', event.target.files[0]);
@@ -45,9 +50,16 @@ export const FileInput = ({ formSchema, register, errors }) => {
       .post('https://api.imgbb.com/1/upload', imageData)
       .then(function (res) {
         setUploadedImage(res.data.data);
+        setLoading(false);
       })
       .catch(function (error) {
-        // console.log(error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Image upload failed for internal issue!',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+        setLoading(false);
       });
   };
   return (
@@ -60,6 +72,16 @@ export const FileInput = ({ formSchema, register, errors }) => {
       <div className="">
         <input type="file" onChange={uploadImage} name="logo" id="logo" />
       </div>
+      {loading && (
+        <div className="mt-3">
+          <ReactLoading
+            type="spinningBubbles"
+            color="rgb(27, 188, 225)"
+            height={40}
+            width={40}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -89,7 +111,6 @@ export const TextArea = ({ formSchema, register, errors }) => {
 };
 
 export const SelectInput = ({ formSchema, register, errors }) => {
-
   return formSchema.name === 'status' ? (
     <></>
   ) : (

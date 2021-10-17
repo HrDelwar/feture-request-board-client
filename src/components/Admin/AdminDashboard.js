@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { result } from 'underscore';
 import AllFeatureRequest from './AllFeatureRequest';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function AdminDashboard() {
   const [reqFormId, setReqFormId] = useState('');
@@ -119,12 +120,13 @@ export default function AdminDashboard() {
         type: '',
         placeholder: '',
         name: '',
-        dragId: '0' + (form.length + 1).toString(),
+        dragId: uuidv4(),
         options: [],
         required: false,
       },
     ]);
   };
+
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) {
@@ -133,7 +135,7 @@ export default function AdminDashboard() {
     const newForm = Array.from(form);
     const [removed] = newForm.splice(result.source.index, 1);
     newForm.splice(result.destination.index, 0, removed);
-    setForm(newForm);
+    setForm([...newForm]);
   };
 
   const handleOnChange = (e, item) => {

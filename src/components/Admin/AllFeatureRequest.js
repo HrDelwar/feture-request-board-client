@@ -61,7 +61,7 @@ export default function AllFeatureRequest() {
 
   const featureObj = groupBy(features, 'status');
 
-  const handleStatusChange = async (status, _id) => {
+  const handleStatusChange = async (status, _id, oldStatus) => {
     try {
       const response = await fetch(
         'https://mysterious-sands-20308.herokuapp.com/feature/status-update',
@@ -85,6 +85,9 @@ export default function AllFeatureRequest() {
           icon: 'error',
           confirmButtonText: 'OK',
         });
+        const dragItem = features.find((i) => i._id === _id);
+        dragItem.status = oldStatus;
+        setFeatures([...features]);
       }
     } catch (err) {
       Swal.fire({
@@ -93,6 +96,9 @@ export default function AllFeatureRequest() {
         icon: 'error',
         confirmButtonText: 'OK',
       });
+      const dragItem = features.find((i) => i._id === _id);
+      dragItem.status = oldStatus;
+      setFeatures([...features]);
     }
   };
 
@@ -102,7 +108,14 @@ export default function AllFeatureRequest() {
     }
 
     if (result.source.droppableId !== result.destination.droppableId) {
-      handleStatusChange(result.destination.droppableId, result.draggableId);
+      const dragItem = features.find((i) => i._id === result.draggableId);
+      dragItem.status = result.destination.droppableId;
+      setFeatures([...features]);
+      handleStatusChange(
+        result.destination.droppableId,
+        result.draggableId,
+        result.source.droppableId
+      );
     }
   };
 
@@ -112,9 +125,13 @@ export default function AllFeatureRequest() {
         Move card to change the status!
       </p>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div className="flex flex-wrap justify-center sm:justify-between items-center w-full  mt-2">
+        <div className="flex flex-wrap justify-center lg:justify-start sm:justify-between items-center lg:items-start w-full  mt-2">
           {allStatus.map((status, i) => (
-            <div style={{minWidth:240, minHeight:120}} className="mt-4 px-4  h-full rounded bg-gray-200  mr-4" key={i}>
+            <div
+              style={{ minWidth: 240, minHeight: 120 }}
+              className="mt-4 px-4   rounded bg-gray-200  mr-4"
+              key={i}
+            >
               <div className=" px-2 text-lg text-gray-700 uppercase text-center">
                 {status}
               </div>

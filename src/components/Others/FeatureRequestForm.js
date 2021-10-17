@@ -31,6 +31,7 @@ export default function FeatureRequestForm({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const onSubmit = async (data, e) => {
@@ -60,7 +61,7 @@ export default function FeatureRequestForm({
           setFeatureRequests([result.savedFeature, ...featureRequests]);
           setIsFeature(false);
           setUploadedImage({ display_url: '' });
-          e.target.reset();
+          reset();
         } else {
           setErrMsg(result.message);
         }
@@ -77,7 +78,7 @@ export default function FeatureRequestForm({
     if (submitFeature) {
       onSubmit(formData.data, formData.e);
     }
-  }, [submitFeature, formData.data, formData.e]);
+  }, [submitFeature]);
 
   useEffect(() => {
     fetch('https://mysterious-sands-20308.herokuapp.com/form/')
@@ -101,7 +102,7 @@ export default function FeatureRequestForm({
         Let us know what features you'd like to see on web!
       </p>
 
-      <form action="" className="" onSubmit={handleSubmit(onSubmit)}>
+      <form action="" className="overflow-hidden" onSubmit={handleSubmit(onSubmit)}>
         {form.map((formSchema, i) => {
           if (formSchema.type === 'text') {
             return (
